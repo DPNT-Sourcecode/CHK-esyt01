@@ -57,57 +57,72 @@ class SuperMarket(object):
     """
     PRICE_TABLE = {
         'A': Item(item_id='A', price=50,
-                  promotions=[Promotion(discount_key='AAAAA',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='AAAAA',
                                         discount_price=200),
-                              Promotion(discount_key='AAA',
+                              Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='AAA',
                                         discount_price=130),
                               ]),
         'B': Item(item_id='B', price=30,
-                  promotions=[Promotion(discount_key='BB',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='BB',
                                         discount_price=45)]),
         'C': Item(item_id='C', price=20, promotions=None),
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
-                  promotions=[Promotion(discount_key='EE',
+                  promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
+                                        discount_key='EE',
                                         discount_product_id='B')]),
         'F': Item(item_id='F', price=10,
-                  promotions=[Promotion(discount_key='FF',
+                  promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
+                                        discount_key='FF',
                                         discount_product_id='F')]),
         'G': Item(item_id='F', price=20, promotions=None),
         'H': Item(item_id='H', price=10,
-                  promotions=[Promotion(discount_key='HHHHHHHHHH',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='HHHHHHHHHH',
                                         discount_price=80),
-                              Promotion(discount_key='HHHHH',
+                              Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='HHHHH',
                                         discount_price=45)]),
         'I': Item(item_id='I', price=35, promotions=None),
         'J': Item(item_id='J', price=60, promotions=None),
         'K': Item(item_id='K', price=70,
-                  promotions=[Promotion(discount_key='KK',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='KK',
                                         discount_price=120)]),
         'L': Item(item_id='L', price=90, promotions=None),
         'M': Item(item_id='M', price=15, promotions=None),
         'N': Item(item_id='N', price=40,
-                  promotions=[Promotion(discount_key='NNN',
+                  promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
+                                        discount_key='NNN',
                                         discount_product_id='M')]),
         'O': Item(item_id='O', price=10, promotions=None),
         'P': Item(item_id='P', price=50,
-                  promotions=[Promotion(discount_key='PPPPP',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='PPPPP',
                                         discount_price=200)]),
         'Q': Item(item_id='Q', price=30,
-                  promotions=[Promotion(discount_key='QQQ',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='QQQ',
                                         discount_price=80)]),
         'R': Item(item_id='R', price=50,
-                  promotions=[Promotion(discount_key='RRR',
+                  promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
+                                        discount_key='RRR',
                                         discount_product_id='Q')]),
         'S': Item(item_id='S', price=20, promotions=None),
         'T': Item(item_id='T', price=20, promotions=None),
         'U': Item(item_id='U', price=40,
-                  promotions=[Promotion(discount_key='UUU',
+                  promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
+                                        discount_key='UUU',
                                         discount_product_id='U')]),
         'V': Item(item_id='V', price=50,
-                  promotions=[Promotion(discount_key='VVV',
+                  promotions=[Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='VVV',
                                         discount_price=130),
-                              Promotion(discount_key='VV',
+                              Promotion(discount_type=PRICE_DISCOUNT_TYPE,
+                                        discount_key='VV',
                                         discount_price=90)]),
         'W': Item(item_id='W', price=20, promotions=None),
         'X': Item(item_id='X', price=17, promotions=None),
@@ -140,8 +155,9 @@ class SuperMarket(object):
         discount = (len(promotion.discount_key) * item.price) - promotion.discount_price
         self.running_total -= discount
 
-    def _apply_product_discount(self, discount_product):
+    def _apply_product_discount(self, promotion):
         """Add bonus product because of specific quantity"""
+        discount_product = promotion.discount_product_id
         bonus_product = self.PRICE_TABLE.get(discount_product)
         if discount_product in self.order:
             discount = bonus_product.price
@@ -170,13 +186,12 @@ class SuperMarket(object):
                         # removes the items from the order since
                         # we are already applying promotion
                         self.order = self.order.replace(promotion.discount_key, '', 1)
-                        discount_price = promotion.discount_price
-                        discount_product = promotion.discount_product_id
-                        # check if it's a price discount or product discount
-                        if discount_price:
+                        discount_type = promotion.discount_type
+                        # check the type of discount to apply
+                        if discount_type == PRICE_DISCOUNT_TYPE:
                             self._apply_price_discount(promotion, item)
-                        else:
-                            self._apply_product_discount(discount_product)
+                        elif discount_type == MULTI_PRICING_DISCOUNT_TYPE:
+                            self._apply_product_discount(promotion)
                     else:
                         applied_promotions += 1
 
