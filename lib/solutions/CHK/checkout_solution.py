@@ -1,6 +1,4 @@
 
-from collections import Counter
-
 
 class Promotion(object):
     def __init__(self, discount_quantity, discount_price=None,
@@ -55,25 +53,25 @@ class SuperMarket(object):
     """
     PRICE_TABLE = {
         'A': Item(item_id='A', price=50,
-                  promotions={'disc_3': Promotion(discount_quantity=3,
-                                                  discount_price=130),
-                              'disc_5': Promotion(discount_quantity=5,
-                                                  discount_price=200),
+                  promotions={'AAA': Promotion(discount_quantity=3,
+                                               discount_price=130),
+                              'AAAAA': Promotion(discount_quantity=5,
+                                                 discount_price=200),
                               }),
         'B': Item(item_id='B', price=30,
-                  promotions={'disc_2': Promotion(discount_quantity=2,
-                                                  discount_price=45)}),
+                  promotions={'BB': Promotion(discount_quantity=2,
+                                              discount_price=45)}),
         'C': Item(item_id='C', price=20, promotions=None),
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
-                  promotions={'disc_2': Promotion(discount_quantity=2,
-                                                  discount_product='B')})
+                  promotions={'EE': Promotion(discount_quantity=2,
+                                              discount_product='B')})
     }
 
     def __init__(self, cart_skus):
         self.running_total = 0
         self.cart = Cart()
-        self.items_count = Counter(cart_skus)
+        self.order = cart_skus
 
     def scan(self, sku):
         """
@@ -100,17 +98,18 @@ class SuperMarket(object):
         for item_identifier in self.items_count:
             current_count = self.items_count[item_identifier]
             item = self.PRICE_TABLE.get(item_identifier)
-            discount_quantity = item.discount_quantity
-            discount_price = item.discount_price
-            discount_product = item.discount_product
-            if discount_quantity and current_count == discount_quantity:
-                if discount_price:
-                    discount = (discount_quantity * item.price) - item.discount_price
-                    self.running_total -= discount
-                else:
-                    bonus_product = self.PRICE_TABLE.get(discount_product)
-                    self.cart.add_bonus_item_to_cart(item=bonus_product)
-                self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
+            if item.promotions:
+                discount_quantity = item.discount_quantity
+                discount_price = item.discount_price
+                discount_product = item.discount_product
+                if discount_quantity and current_count == discount_quantity:
+                    if discount_price:
+                        discount = (discount_quantity * item.price) - item.discount_price
+                        self.running_total -= discount
+                    else:
+                        bonus_product = self.PRICE_TABLE.get(discount_product)
+                        self.cart.add_bonus_item_to_cart(item=bonus_product)
+                    self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
 
     def get_total(self):
         return self.running_total
