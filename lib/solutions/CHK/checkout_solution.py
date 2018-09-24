@@ -133,3 +133,6 @@ def checkout(skus):
     supermarket.apply_discounts()
     return supermarket.get_total()
 
+
+if __name__ == '__main__':
+    print(checkout('FF'))

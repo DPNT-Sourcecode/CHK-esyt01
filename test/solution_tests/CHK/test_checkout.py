@@ -41,6 +41,13 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('AAAAAAAA'), 330)
         self.assertEqual(checkout_solution.checkout('AAAAAAAAAA'), 400)
 
+    def test_bonus_product_of_the_same_kind(self):
+        self.assertEqual(checkout_solution.checkout('FF'), 20)
+        self.assertEqual(checkout_solution.checkout('FFF'), 20)
+        self.assertEqual(checkout_solution.checkout('FFFF'), 40)
+        self.assertEqual(checkout_solution.checkout('FFFFF'), 40)
+        self.assertEqual(checkout_solution.checkout('ABCDFEABFCDEF'), 300)
+
 
 if __name__ == '__main__':
     unittest.main()
