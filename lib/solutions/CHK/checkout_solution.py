@@ -74,12 +74,13 @@ class SuperMarket(object):
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
                   promotions={'disc_2': Promotion(discount_quantity=2,
-                                                  discount_product='B')}
+                                                  discount_product='B')})
     }
 
-    def __init__(self):
+    def __init__(self, cart_skus):
         self.running_total = 0
         self.cart = Cart()
+        self.items_count = Counter(cart_skus)
 
     def scan(self, sku):
         """
@@ -88,11 +89,10 @@ class SuperMarket(object):
 
         @:return: True if it's a valid Stock Keeping Units, False otherwise.
         """
-        item = PRICE_TABLE.get(sku)
+        item = self.PRICE_TABLE.get(sku)
         if item:
             self.running_total += item.price
             self.cart.add_item_to_cart(item=item)
-            self._apply_discount(item=item)
             return True
         else:
             return False
@@ -114,7 +114,7 @@ class SuperMarket(object):
                 discount = (discount_quantity * item.price) - item.discount_price
                 self.running_total -= discount
             else:
-                bonus_product = PRICE_TABLE.get(discount_product)
+                bonus_product = self.PRICE_TABLE.get(discount_product)
                 self.cart.add_bonus_item_to_cart(item=bonus_product)
             self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
 
@@ -134,4 +134,5 @@ def checkout(skus):
         valid_sku = supermarket.scan(sku)
         if not valid_sku:
             return -1
+    supermarket.apply_discounts()
     return supermarket.get_total()
