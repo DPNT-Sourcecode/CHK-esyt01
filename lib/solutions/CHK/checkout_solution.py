@@ -97,26 +97,26 @@ class SuperMarket(object):
         else:
             return False
 
-    def _apply_discount(self, item):
+    def _apply_discounts(self):
         """
-        Check current cart count for the specified item and apply discount to
-        running total if price discount or add products to cart if bonus discount.
+        Checks current quantity of items in cart and applies discount to
+        running total if price discount or adds products to cart if bonus discount.
         If a discount is applied resets the cart count of that item to reapply
         discount.
-        :param item: SKU item present in PRICE_TABLE
         """
-        current_count = self.cart.get_item_quantity_in_cart(item_id=item.item_id)
-        discount_quantity = item.discount_quantity
-        discount_price = item.discount_price
-        discount_product = item.discount_product
-        if discount_quantity and current_count == discount_quantity:
-            if discount_price:
-                discount = (discount_quantity * item.price) - item.discount_price
-                self.running_total -= discount
-            else:
-                bonus_product = self.PRICE_TABLE.get(discount_product)
-                self.cart.add_bonus_item_to_cart(item=bonus_product)
-            self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
+        for item in self.items_count:
+            current_count = self.cart.get_item_quantity_in_cart(item_id=item.item_id)
+            discount_quantity = item.discount_quantity
+            discount_price = item.discount_price
+            discount_product = item.discount_product
+            if discount_quantity and current_count == discount_quantity:
+                if discount_price:
+                    discount = (discount_quantity * item.price) - item.discount_price
+                    self.running_total -= discount
+                else:
+                    bonus_product = self.PRICE_TABLE.get(discount_product)
+                    self.cart.add_bonus_item_to_cart(item=bonus_product)
+                self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
 
     def get_total(self):
         return self.running_total
