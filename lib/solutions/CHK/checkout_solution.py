@@ -53,19 +53,19 @@ class SuperMarket(object):
     """
     PRICE_TABLE = {
         'A': Item(item_id='A', price=50,
-                  promotions=(Promotion(discount_key='AAAAA',
+                  promotions=[Promotion(discount_key='AAAAA',
                                         discount_price=200),
                               Promotion(discount_key='AAA',
                                         discount_price=130),
-                              ),
+                              ]),
         'B': Item(item_id='B', price=30,
-                  promotions=(Promotion(discount_key='BB',
-                                        discount_price=45))),
+                  promotions=[Promotion(discount_key='BB',
+                                        discount_price=45)]),
         'C': Item(item_id='C', price=20, promotions=None),
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
-                  promotions=(Promotion(discount_key='EE',
-                                              discount_product='B')))
+                  promotions=[Promotion(discount_key='EE',
+                                              discount_product='B')])
     }
 
     def __init__(self, cart_skus):
@@ -96,24 +96,24 @@ class SuperMarket(object):
         discount.
         """
         for item_identifier, cart_item in enumerate(self.cart.items):
-            current_count = self.items_count[item_identifier]
+            current_count = self.cart.get_item_quantity_in_cart(item_identifier)
             item = cart_item['item']
-            promotions =
             number_of_promotions = len(item.promotions)
             applied_promotions = 0
             while applied_promotions != number_of_promotions:
-                promotion_key, promotion_value = item.promotions.items
-
-                discount_price = item.discount_price
-                discount_product = item.discount_product
-                if discount_quantity and current_count == discount_quantity:
+                promotion = item.promotions[applied_promotions]
+                if promotion.discount_key in self.order:
+                    discount_price = promotion.discount_price
+                    discount_product = promotion.discount_product
                     if discount_price:
-                        discount = (discount_quantity * item.price) - item.discount_price
+                        discount = (len(promotion.discount_key) * item.price) - item.discount_price
                         self.running_total -= discount
                     else:
                         bonus_product = self.PRICE_TABLE.get(discount_product)
                         self.cart.add_bonus_item_to_cart(item=bonus_product)
-                    self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
+                    self.order.replace(promotion.discount_key, '')
+                else:
+                    applied_promotions += 1
 
     def get_total(self):
         return self.running_total
