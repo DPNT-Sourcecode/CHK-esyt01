@@ -97,7 +97,7 @@ class SuperMarket(object):
         """
         for item_identifier, cart_item in enumerate(self.cart.items):
             current_count = self.items_count[item_identifier]
-            item = self.PRICE_TABLE.get(item_identifier)
+            item = cart_item['item']
             if item.promotions:
                 discount_quantity = item.discount_quantity
                 discount_price = item.discount_price
