@@ -44,13 +44,12 @@ class SuperMarket(object):
         discount.
         :param item: SKU item present in PRICE_TABLE
         """
-        current_count = self.cart[item.item.item_id]
+        current_count = self.cart[item.item_id]
         discount_quantity = item.discount_quantity
         if discount_quantity and current_count == discount_quantity:
             discount = (discount_quantity * item.price) - item.discount_price
             self.running_total -= discount
             self.cart[item.item_id] = 0
-
 
     def get_total(self):
         return self.running_total
