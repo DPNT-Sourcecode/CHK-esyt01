@@ -44,8 +44,9 @@ class TestCheckout(unittest.TestCase):
     def test_bonus_product_of_the_same_kind(self):
         self.assertEqual(checkout_solution.checkout('FF'), 20)
         self.assertEqual(checkout_solution.checkout('FFF'), 20)
-        self.assertEqual(checkout_solution.checkout('FFFF'), 40)
+        self.assertEqual(checkout_solution.checkout('FFFF'), 30)
         self.assertEqual(checkout_solution.checkout('FFFFF'), 40)
+        self.assertEqual(checkout_solution.checkout('FFFFFF'), 40)
         self.assertEqual(checkout_solution.checkout('ABCDFEABFCDEF'), 300)
 
 

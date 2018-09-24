@@ -98,8 +98,6 @@ class SuperMarket(object):
                 applied_promotions = 0
                 while applied_promotions < number_of_promotions:
                     promotion = item.promotions[applied_promotions]
-                    print(promotion.discount_key)
-                    print(self.order)
                     if promotion.discount_key in self.order:
                         self.order = self.order.replace(promotion.discount_key, '', 1)
                         discount_price = promotion.discount_price
@@ -135,6 +133,3 @@ def checkout(skus):
     supermarket.apply_discounts()
     return supermarket.get_total()
 
-
-if __name__ == '__main__':
-    print(checkout('FF'))
