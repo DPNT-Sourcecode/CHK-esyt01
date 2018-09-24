@@ -72,7 +72,7 @@ class SuperMarket(object):
         'J': Item(item_id='J', price=60, promotions=None),
         'K': Item(item_id='K', price=80,
                   promotions=[Promotion(discount_key='KK',
-                                        discount_price=250)]),
+                                        discount_price=150)]),
         'L': Item(item_id='L', price=90, promotions=None),
         'M': Item(item_id='M', price=15, promotions=None),
         'N': Item(item_id='N', price=40,
