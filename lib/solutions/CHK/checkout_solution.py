@@ -23,7 +23,6 @@ class Cart(object):
 
     def __init__(self):
         self.items = {}
-        self.bonus_items = {}
 
     def add_item_to_cart(self, item):
         """Adds item to cart or increments the quantity of that item."""
@@ -31,16 +30,6 @@ class Cart(object):
             self.items[item.item_id]['quantity'] += 1
         else:
             self.items[item.item_id] = {'item': item, 'quantity': 1}
-
-    def add_bonus_item_to_cart(self, item):
-        """
-        Adds item to bonus cart or increments the quantity of that item.
-        Does not count to running total
-        """
-        if item.item_id in self.bonus_items:
-            self.bonus_items[item.item_id]['quantity'] += 1
-        else:
-            self.bonus_items[item.item_id] = {'item': item, 'quantity': 1}
 
     def get_item_quantity_in_cart(self, item_id):
         return self.items[item_id]['quantity']
@@ -113,8 +102,9 @@ class SuperMarket(object):
                             self.running_total -= discount
                         else:
                             bonus_product = self.PRICE_TABLE.get(discount_product)
-                            self.cart.add_bonus_item_to_cart(item=bonus_product)
-                        self.order = self.order.replace(promotion.discount_key, '')
+                            if discount_product in self.order:
+
+                        self.order = self.order.replace(promotion.discount_key, '', 1)
                     else:
                         applied_promotions += 1
 
