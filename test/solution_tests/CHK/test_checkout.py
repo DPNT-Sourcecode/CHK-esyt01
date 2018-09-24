@@ -14,7 +14,7 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout(''), 0)
 
     def test_invalid_item_checkout(self):
-        self.assertEqual(checkout_solution.checkout('AAAZ'), -1)
+        self.assertEqual(checkout_solution.checkout('AAAx'), -1)
 
     def test_discount_checkout(self):
         self.assertEqual(checkout_solution.checkout('BB'), 45)
