@@ -7,7 +7,7 @@ PRICE_TABLE = {
     'A': SKU(item_id='A', price=50, discount_quantity=3, discount_price=130),
     'B': SKU(item_id='B', price=30, discount_quantity=2, discount_price=45),
     'C': SKU(item_id='C', price=20, discount_quantity=None, discount_price=None),
-    'D': SKU(item_id='D', price=15, discount_quantity=None, discount_price=None),
+    'D': SKU(item_id='D', price=15, discount_quantity=None, discount_price=None)
 }
 
 
@@ -28,6 +28,7 @@ class SuperMarket(object):
 
         @:return: True if it's a valid Stock Keeping Units, False otherwise.
         """
+        print(PRICE_TABLE)
         item = PRICE_TABLE.get(sku)
         print('sku requested %s' % sku)
         print('item %s' % item)
