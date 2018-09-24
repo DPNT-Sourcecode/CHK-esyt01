@@ -26,10 +26,13 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('AAAA'), 180)
         self.assertEqual(checkout_solution.checkout('BBB'), 75)
 
-    def test_add_bonus_product_does_not_alter_total(self):
+    def test_bonus_product_alter_total(self):
         self.assertEqual(checkout_solution.checkout('EE'), 80)
         self.assertEqual(checkout_solution.checkout('EEB'), 80)
         self.assertEqual(checkout_solution.checkout('EEEB'), 120)
+        self.assertEqual(checkout_solution.checkout('EEEEBB'), 160)
+        self.assertEqual(checkout_solution.checkout('BEBEEE'), 160)
+        self.assertEqual(checkout_solution.checkout('ABCDEABCDE'), 280)
 
     def test_multiple_discounts_of_same_product(self):
         self.assertEqual(checkout_solution.checkout('AAAAA'), 200)
