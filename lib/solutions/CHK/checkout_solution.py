@@ -1,9 +1,9 @@
 
 
 class Promotion(object):
-    def __init__(self, discount_quantity, discount_price=None,
+    def __init__(self, discount_key, discount_price=None,
                  discount_product_id=None):
-        self.discount_quantity = discount_quantity
+        self.discount_key = discount_key
         self.discount_price = discount_price
         self.discount_product_id = discount_product_id
 
@@ -53,19 +53,19 @@ class SuperMarket(object):
     """
     PRICE_TABLE = {
         'A': Item(item_id='A', price=50,
-                  promotions={'AAAAA': Promotion(discount_quantity=5,
-                                                 discount_price=200),
-                              'AAA': Promotion(discount_quantity=3,
-                                               discount_price=130),
-                              }),
+                  promotions=(Promotion(discount_key='AAAAA',
+                                        discount_price=200),
+                              Promotion(discount_key='AAA',
+                                        discount_price=130),
+                              ),
         'B': Item(item_id='B', price=30,
-                  promotions={'BB': Promotion(discount_quantity=2,
-                                              discount_price=45)}),
+                  promotions=(Promotion(discount_key='BB',
+                                        discount_price=45))),
         'C': Item(item_id='C', price=20, promotions=None),
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
-                  promotions={'EE': Promotion(discount_quantity=2,
-                                              discount_product='B')})
+                  promotions=(Promotion(discount_key='EE',
+                                              discount_product='B')))
     }
 
     def __init__(self, cart_skus):
@@ -98,9 +98,11 @@ class SuperMarket(object):
         for item_identifier, cart_item in enumerate(self.cart.items):
             current_count = self.items_count[item_identifier]
             item = cart_item['item']
+            promotions =
             number_of_promotions = len(item.promotions)
             applied_promotions = 0
-            for promotion_key, promotion in enumerate(item.promotions):
+            while applied_promotions != number_of_promotions:
+                promotion_key, promotion_value = item.promotions.items
 
                 discount_price = item.discount_price
                 discount_product = item.discount_product
