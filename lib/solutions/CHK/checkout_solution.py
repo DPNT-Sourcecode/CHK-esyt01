@@ -1,5 +1,5 @@
 
-from collections import namedtuple, Counter
+from collections import namedtuple
 
 SKU = namedtuple('SKU', 'item_id price discount_quantity discount_price discount_product')
 
@@ -25,7 +25,6 @@ class SuperMarket(object):
 
     def __init__(self, cart_items):
         self.running_total = 0
-        self.items_count = Counter(cart_items)
         self.cart = {}
 
     def scan(self, sku):
@@ -38,28 +37,38 @@ class SuperMarket(object):
         item = PRICE_TABLE.get(sku)
         if item:
             self.running_total += item.price
-            if item.item_id in self.cart:
-                self.cart[item.item_id] += 1
-            else:
-                self.cart[item.item_id] = 1
+            self._add_item_to_cart(item)
             self._apply_discount(item)
             return True
         else:
             return False
 
+    def _add_item_to_cart(self, item):
+        """Adds item to cart or increments the quantity of that item."""
+        if item.item_id not in self.cart:
+            self.cart[item.item_id]['quantity'] += 1
+        else:
+            self.cart[item.item_id] = {'item': item, 'quantity': 1}
+
     def _apply_discount(self, item):
         """
         Check current cart count for the specified item and apply discount to
-        running total.
+        running total if price discount or add products to cart if bonus discount.
         If a discount is applied resets the cart count of that item to reapply
         discount.
         :param item: SKU item present in PRICE_TABLE
         """
-        current_count = self.cart[item.item_id]
+        current_count = self.cart[item.item_id]['quantity']
         discount_quantity = item.discount_quantity
+        discount_price = item.discount_price
+        discount_product = item.discount_product
         if discount_quantity and current_count == discount_quantity:
-            discount = (discount_quantity * item.price) - item.discount_price
-            self.running_total -= discount
+            if discount_price:
+                discount = (discount_quantity * item.price) - item.discount_price
+                self.running_total -= discount
+            else:
+                bonus_product = PRICE_TABLE.get(discount_product)
+                self._add_item_to_cart(bonus_product)
             self.cart[item.item_id] = 0
 
     def get_total(self):
