@@ -45,6 +45,9 @@ class Cart(object):
     def get_item_quantity_in_cart(self, item_id):
         return self.items[item_id]['quantity']
 
+    def get_cart_items(self):
+        return self.items.values()
+
 
 class SuperMarket(object):
     """
@@ -65,7 +68,7 @@ class SuperMarket(object):
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
                   promotions=[Promotion(discount_key='EE',
-                                              discount_product='B')])
+                                        discount_product_id='B')])
     }
 
     def __init__(self, cart_skus):
@@ -88,23 +91,21 @@ class SuperMarket(object):
         else:
             return False
 
-    def _apply_discounts(self):
+    def apply_discounts(self):
         """
         Checks current quantity of items in cart and applies discount to
         running total if price discount or adds products to cart if bonus discount.
         If a discount is applied resets the cart count of that item to reapply
         discount.
         """
-        for item_identifier, cart_item in enumerate(self.cart.items):
-            current_count = self.cart.get_item_quantity_in_cart(item_identifier)
-            item = cart_item['item']
+        for item in self.cart.items:
             number_of_promotions = len(item.promotions)
             applied_promotions = 0
             while applied_promotions != number_of_promotions:
                 promotion = item.promotions[applied_promotions]
                 if promotion.discount_key in self.order:
                     discount_price = promotion.discount_price
-                    discount_product = promotion.discount_product
+                    discount_product = promotion.discount_product_id
                     if discount_price:
                         discount = (len(promotion.discount_key) * item.price) - item.discount_price
                         self.running_total -= discount
