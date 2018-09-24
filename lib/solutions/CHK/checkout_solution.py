@@ -23,8 +23,9 @@ class SuperMarket(object):
     validating SKU's and applying discounts when available.
     """
 
-    def __init__(self):
+    def __init__(self, cart_items):
         self.running_total = 0
+        self.items_count = Counter(cart_items)
         self.cart = {}
 
     def scan(self, sku):
