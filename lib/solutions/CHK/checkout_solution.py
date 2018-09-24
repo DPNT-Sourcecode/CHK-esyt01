@@ -103,8 +103,9 @@ class SuperMarket(object):
             if item.promotions:
                 number_of_promotions = len(item.promotions)
                 applied_promotions = 0
-                while applied_promotions != number_of_promotions:
+                while applied_promotions < number_of_promotions:
                     promotion = item.promotions[applied_promotions]
+                    print(applied_promotions)
                     print(promotion.discount_key)
                     print(self.order)
                     if promotion.discount_key in self.order:
