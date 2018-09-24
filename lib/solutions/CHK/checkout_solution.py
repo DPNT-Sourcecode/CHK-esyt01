@@ -29,6 +29,8 @@ class SuperMarket(object):
         @:return: True if it's a valid Stock Keeping Units, False otherwise.
         """
         item = PRICE_TABLE.get(sku)
+        print('sku requested %s' % sku)
+        print('item %s' % item)
         if item:
             self.running_total += item.price
             if item.item_id in self.cart:
@@ -65,7 +67,6 @@ def checkout(skus):
     Supermarket checkout that calculates the total price of a number of
     items
     """
-
     supermarket = SuperMarket()
     for sku in skus:
         valid_sku = supermarket.scan(sku)
