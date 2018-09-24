@@ -66,19 +66,15 @@ class SuperMarket(object):
                                                   discount_price=130),
                               'disc_5': Promotion(discount_quantity=5,
                                                   discount_price=200),
-                              },
-                 discount_product=None),
-        'B': Item(item_id='B', price=30, discount_quantity=2, discount_price=45,
-                 discount_product=None),
-        'C': Item(item_id='C', price=20, discount_quantity=None,
-                 discount_price=None,
-                 discount_product=None),
-        'D': Item(item_id='D', price=15, discount_quantity=None,
-                 discount_price=None,
-                 discount_product=None),
-        'E': Item(item_id='E', price=40, discount_quantity=2,
-                 discount_price=None,
-                 discount_product='B'),
+                              }),
+        'B': Item(item_id='B', price=30,
+                  promotions={'disc_2': Promotion(discount_quantity=2,
+                                                  discount_price=45)}),
+        'C': Item(item_id='C', price=20, promotions=None),
+        'D': Item(item_id='D', price=15, promotions=None),
+        'E': Item(item_id='E', price=40,
+                  promotions={'disc_2': Promotion(discount_quantity=2,
+                                                  discount_product='B')}
     }
 
     def __init__(self):
