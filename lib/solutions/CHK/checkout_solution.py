@@ -103,7 +103,9 @@ class SuperMarket(object):
                         else:
                             bonus_product = self.PRICE_TABLE.get(discount_product)
                             if discount_product in self.order:
-
+                                discount = bonus_product.price
+                                self.running_total -= discount
+                                self.order = self.order.replace(discount_product, '', 1)
                         self.order = self.order.replace(promotion.discount_key, '', 1)
                     else:
                         applied_promotions += 1
