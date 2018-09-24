@@ -1,13 +1,19 @@
 
-from collections import namedtuple
+from collections import namedtuple, Counter
 
-SKU = namedtuple('SKU', 'item_id price discount_quantity discount_price')
+SKU = namedtuple('SKU', 'item_id price discount_quantity discount_price discount_product')
 
 PRICE_TABLE = {
-    'A': SKU(item_id='A', price=50, discount_quantity=3, discount_price=130),
-    'B': SKU(item_id='B', price=30, discount_quantity=2, discount_price=45),
-    'C': SKU(item_id='C', price=20, discount_quantity=None, discount_price=None),
-    'D': SKU(item_id='D', price=15, discount_quantity=None, discount_price=None)
+    'A': SKU(item_id='A', price=50, discount_quantity=3, discount_price=130,
+             discount_product=None),
+    'B': SKU(item_id='B', price=30, discount_quantity=2, discount_price=45,
+             discount_product=None),
+    'C': SKU(item_id='C', price=20, discount_quantity=None, discount_price=None,
+             discount_product=None),
+    'D': SKU(item_id='D', price=15, discount_quantity=None, discount_price=None,
+             discount_product=None),
+    'E': SKU(item_id='E', price=40, discount_quantity=2, discount_price=None,
+             discount_product='B'),
 }
 
 
