@@ -98,23 +98,25 @@ class SuperMarket(object):
         If a discount is applied resets the cart count of that item to reapply
         discount.
         """
-        for item in self.cart.items:
-            number_of_promotions = len(item.promotions)
-            applied_promotions = 0
-            while applied_promotions != number_of_promotions:
-                promotion = item.promotions[applied_promotions]
-                if promotion.discount_key in self.order:
-                    discount_price = promotion.discount_price
-                    discount_product = promotion.discount_product_id
-                    if discount_price:
-                        discount = (len(promotion.discount_key) * item.price) - item.discount_price
-                        self.running_total -= discount
+        for cart_item in self.cart.get_cart_items():
+            item = cart_item['item']
+            if item.promotions:
+                number_of_promotions = len(item.promotions)
+                applied_promotions = 0
+                while applied_promotions != number_of_promotions:
+                    promotion = item.promotions[applied_promotions]
+                    if promotion.discount_key in self.order:
+                        discount_price = promotion.discount_price
+                        discount_product = promotion.discount_product_id
+                        if discount_price:
+                            discount = (len(promotion.discount_key) * item.price) - item.discount_price
+                            self.running_total -= discount
+                        else:
+                            bonus_product = self.PRICE_TABLE.get(discount_product)
+                            self.cart.add_bonus_item_to_cart(item=bonus_product)
+                        self.order.replace(promotion.discount_key, '')
                     else:
-                        bonus_product = self.PRICE_TABLE.get(discount_product)
-                        self.cart.add_bonus_item_to_cart(item=bonus_product)
-                    self.order.replace(promotion.discount_key, '')
-                else:
-                    applied_promotions += 1
+                        applied_promotions += 1
 
     def get_total(self):
         return self.running_total
