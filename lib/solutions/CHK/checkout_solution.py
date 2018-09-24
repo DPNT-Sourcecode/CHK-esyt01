@@ -17,15 +17,45 @@ PRICE_TABLE = {
 }
 
 
+class Cart(object):
+    """
+    Represents the current customer cart.
+    """
+
+    def __init__(self):
+        self.items = {}
+        self.bonus_items = {}
+
+    def add_item_to_cart(self, item):
+        """Adds item to cart or increments the quantity of that item."""
+        if item.item_id not in self.cart:
+            self.items[item.item_id]['quantity'] += 1
+        else:
+            self.items[item.item_id] = {'item': item, 'quantity': 1}
+
+    def add_bonus_item_to_cart(self, item):
+        """
+        Adds item to bonus cart or increments the quantity of that item.
+        Does not count to running total
+        """
+        if item.item_id not in self.cart:
+            self.bonus_items[item.item_id]['quantity'] += 1
+        else:
+            self.bonus_items[item.item_id] = {'item': item, 'quantity': 1}
+
+    def get_item_quantity_in_cart(self, item_id):
+        return self.items[item_id]['quantity']
+
+
 class SuperMarket(object):
     """
     Supermarket class that contains items and runs the items to the cashier
     validating SKU's and applying discounts when available.
     """
 
-    def __init__(self, cart_items):
+    def __init__(self):
         self.running_total = 0
-        self.cart = {}
+        self.cart = Cart()
 
     def scan(self, sku):
         """
@@ -37,18 +67,11 @@ class SuperMarket(object):
         item = PRICE_TABLE.get(sku)
         if item:
             self.running_total += item.price
-            self._add_item_to_cart(item)
+            self.cart.add_item_to_cart(item)
             self._apply_discount(item)
             return True
         else:
             return False
-
-    def _add_item_to_cart(self, item):
-        """Adds item to cart or increments the quantity of that item."""
-        if item.item_id not in self.cart:
-            self.cart[item.item_id]['quantity'] += 1
-        else:
-            self.cart[item.item_id] = {'item': item, 'quantity': 1}
 
     def _apply_discount(self, item):
         """
@@ -58,7 +81,7 @@ class SuperMarket(object):
         discount.
         :param item: SKU item present in PRICE_TABLE
         """
-        current_count = self.cart[item.item_id]['quantity']
+        current_count = self.cart.get_item_quantity_in_cart(item.item_id)
         discount_quantity = item.discount_quantity
         discount_price = item.discount_price
         discount_product = item.discount_product
@@ -68,7 +91,7 @@ class SuperMarket(object):
                 self.running_total -= discount
             else:
                 bonus_product = PRICE_TABLE.get(discount_product)
-                self._add_item_to_cart(bonus_product)
+                self.cart.add_bonus_item_to_cart(bonus_product)
             self.cart[item.item_id] = 0
 
     def get_total(self):
