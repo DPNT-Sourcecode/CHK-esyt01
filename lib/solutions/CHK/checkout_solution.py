@@ -6,13 +6,16 @@ SKU = namedtuple('SKU', 'item_id price discount_quantity discount_price')
 PRICE_TABLE = {
     'A': SKU(item_id='A', price=50, discount_quantity=3, discount_price=130),
     'B': SKU(item_id='B', price=30, discount_quantity=2, discount_price=45),
-    'C': SKU(item_id='C', price=20),
-    'D': SKU(item_id='D', price=15),
+    'C': SKU(item_id='C', price=20, discount_quantity=None, discount_price=None),
+    'D': SKU(item_id='D', price=15, discount_quantity=None, discount_price=None),
 }
 
 
 class SuperMarket(object):
-    """Supermarket checkout that calculates the total price of a number of items"""
+    """
+    Supermarket class that contains items and runs the items to the cashier
+    validating SKU's and applying discounts when available.
+    """
 
     def __init__(self):
         self.running_total = 0
@@ -54,10 +57,14 @@ class SuperMarket(object):
     def get_total(self):
         return self.running_total
 
+
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-
+    """
+    Supermarket checkout that calculates the total price of a number of
+    items
+    """
 
     supermarket = SuperMarket()
     for sku in skus:
