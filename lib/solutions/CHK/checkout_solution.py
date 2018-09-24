@@ -129,8 +129,13 @@ class SuperMarket(object):
         discount = (len(promotion.discount_key) * item.price) - promotion.discount_price
         self.running_total -= discount
 
-    def _apply_product_discount(self):
+    def _apply_product_discount(self, discount_product):
         """Add bonus product because of specific quantity"""
+        bonus_product = self.PRICE_TABLE.get(discount_product)
+        if discount_product in self.order:
+            discount = bonus_product.price
+            self.running_total -= discount
+            self.order = self.order.replace(discount_product, '', 1)
 
     def apply_discounts(self):
         """
@@ -141,24 +146,26 @@ class SuperMarket(object):
         """
         for cart_item in self.cart.get_cart_items():
             item = cart_item['item']
+            # only apply to items with promotions
             if item.promotions:
                 number_of_promotions = len(item.promotions)
                 applied_promotions = 0
+                # checks all promotions,
+                # passes to other promotion when hasn't found any more to apply
                 while applied_promotions < number_of_promotions:
                     promotion = item.promotions[applied_promotions]
+                    # checks the pattern is in the order
                     if promotion.discount_key in self.order:
+                        # removes the items from the order since
+                        # we are already applying promotion
                         self.order = self.order.replace(promotion.discount_key, '', 1)
                         discount_price = promotion.discount_price
                         discount_product = promotion.discount_product_id
+                        # check if it's a price discount or product discount
                         if discount_price:
-                            discount = (len(promotion.discount_key) * item.price) - promotion.discount_price
-                            self.running_total -= discount
+                            self._apply_price_discount(promotion, item)
                         else:
-                            bonus_product = self.PRICE_TABLE.get(discount_product)
-                            if discount_product in self.order:
-                                discount = bonus_product.price
-                                self.running_total -= discount
-                                self.order = self.order.replace(discount_product, '', 1)
+                            self._apply_product_discount(discount_product)
                     else:
                         applied_promotions += 1
 
