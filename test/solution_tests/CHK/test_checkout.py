@@ -26,6 +26,9 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('AAAA'), 180)
         self.assertEqual(checkout_solution.checkout('BBB'), 75)
 
+    def test_add_bonus_product_does_not_alter_total(self):
+        self.assertEqual(checkout_solution.checkout('EE'), 80)
+        self.assertEqual(checkout_solution.checkout('EEB'), 110)
 
 if __name__ == '__main__':
     unittest.main()

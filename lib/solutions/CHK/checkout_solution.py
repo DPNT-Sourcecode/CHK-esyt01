@@ -74,8 +74,8 @@ class SuperMarket(object):
         item = PRICE_TABLE.get(sku)
         if item:
             self.running_total += item.price
-            self.cart.add_item_to_cart(item)
-            self._apply_discount(item)
+            self.cart.add_item_to_cart(item=item)
+            self._apply_discount(item=item)
             return True
         else:
             return False
@@ -88,7 +88,7 @@ class SuperMarket(object):
         discount.
         :param item: SKU item present in PRICE_TABLE
         """
-        current_count = self.cart.get_item_quantity_in_cart(item.item_id)
+        current_count = self.cart.get_item_quantity_in_cart(item_id=item.item_id)
         discount_quantity = item.discount_quantity
         discount_price = item.discount_price
         discount_product = item.discount_product
@@ -98,8 +98,8 @@ class SuperMarket(object):
                 self.running_total -= discount
             else:
                 bonus_product = PRICE_TABLE.get(discount_product)
-                self.cart.add_bonus_item_to_cart(bonus_product)
-            self.cart.reset_item_quantity_in_cart()
+                self.cart.add_bonus_item_to_cart(item=bonus_product)
+            self.cart.reset_item_quantity_in_cart(item_id=item.item_id)
 
     def get_total(self):
         return self.running_total
