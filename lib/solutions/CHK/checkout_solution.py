@@ -35,7 +35,8 @@ class Cart(object):
         return self.items[item_id]['quantity']
 
     def get_cart_items(self):
-        return self.items.values()
+        return sorted(self.items.values(), key=lambda x: x['item'].item_id,
+                      reverse=True)
 
 
 class SuperMarket(object):
@@ -123,7 +124,7 @@ def checkout(skus):
     Supermarket checkout that calculates the total price of a number of
     items
     """
-    supermarket = SuperMarket(''.join(sorted(skus, reverse=True)))
+    supermarket = SuperMarket(''.join(sorted(skus)))
     for sku in skus:
         valid_sku = supermarket.scan(sku)
         if not valid_sku:
