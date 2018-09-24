@@ -124,6 +124,14 @@ class SuperMarket(object):
         else:
             return False
 
+    def _apply_price_discount(self, promotion, item):
+        """Apply price discount to specific item quantity"""
+        discount = (len(promotion.discount_key) * item.price) - promotion.discount_price
+        self.running_total -= discount
+
+    def _apply_product_discount(self):
+        """Add bonus product because of specific quantity"""
+
     def apply_discounts(self):
         """
         Checks current quantity of items in cart and applies discount to
