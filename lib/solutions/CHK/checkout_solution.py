@@ -47,13 +47,6 @@ class Cart(object):
     def get_item_quantity_in_cart(self, item_id):
         return self.items[item_id]['quantity']
 
-    def reset_item_quantity_in_cart(self, item_id):
-        """
-        Resets the quantity of the item in the cart
-        (example: after applied discount).
-        """
-        self.items[item_id]['quantity'] = 0
-
 
 class SuperMarket(object):
     """
@@ -104,8 +97,9 @@ class SuperMarket(object):
         If a discount is applied resets the cart count of that item to reapply
         discount.
         """
-        for item in self.items_count:
-            current_count = self.cart.get_item_quantity_in_cart(item_id=item.item_id)
+        for item_identifier in self.items_count:
+            current_count = self.items_count[item_identifier]
+            item = self.PRICE_TABLE.get(item_identifier)
             discount_quantity = item.discount_quantity
             discount_price = item.discount_price
             discount_product = item.discount_product
