@@ -111,8 +111,12 @@ class SuperMarket(object):
                   promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
                                         discount_key='RRR',
                                         discount_product_id='Q')]),
-        'S': Item(item_id='S', price=20, promotions=None),
-        'T': Item(item_id='T', price=20, promotions=None),
+        'S': Item(item_id='S', price=20, promotions=[Promotion(discount_type=GROUP_PRICING_DISCOUNT_TYPE,
+                                                               discount_group=['Z', 'Y', 'T', 'S', 'X'],
+                                                               discount_price=45)]),
+        'T': Item(item_id='T', price=20, promotions=[Promotion(discount_type=GROUP_PRICING_DISCOUNT_TYPE,
+                                                               discount_group=['Z', 'Y', 'T', 'S', 'X'],
+                                                               discount_price=45)]),
         'U': Item(item_id='U', price=40,
                   promotions=[Promotion(discount_type=MULTI_PRICING_DISCOUNT_TYPE,
                                         discount_key='UUU',
@@ -125,9 +129,15 @@ class SuperMarket(object):
                                         discount_key='VV',
                                         discount_price=90)]),
         'W': Item(item_id='W', price=20, promotions=None),
-        'X': Item(item_id='X', price=17, promotions=None),
-        'Y': Item(item_id='Y', price=20, promotions=None),
-        'Z': Item(item_id='Z', price=21, promotions=None)
+        'X': Item(item_id='X', price=17, promotions=[Promotion(discount_type=GROUP_PRICING_DISCOUNT_TYPE,
+                                                               discount_group=['Z', 'Y', 'T', 'S', 'X'],
+                                                               discount_price=45)]),
+        'Y': Item(item_id='Y', price=20, promotions=[Promotion(discount_type=GROUP_PRICING_DISCOUNT_TYPE,
+                                                               discount_group=['Z', 'Y', 'T', 'S', 'X'],
+                                                               discount_price=45)]),
+        'Z': Item(item_id='Z', price=21, promotions=[Promotion(discount_type=GROUP_PRICING_DISCOUNT_TYPE,
+                                                               discount_group=['Z', 'Y', 'T', 'S', 'X'],
+                                                               discount_price=45)])
     }
 
     def __init__(self, cart_skus):
