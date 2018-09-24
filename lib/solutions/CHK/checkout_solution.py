@@ -10,7 +10,59 @@ PRICE_TABLE = {
     'D': SKU(item_id='D', price=15),
 }
 
+
+class SuperMarket(object):
+    """Supermarket checkout that calculates the total price of a number of items"""
+
+    def __init__(self):
+        self.running_total = 0
+        self.cart = {}
+
+    def scan(self, sku):
+        """
+        Scans the item and adds it to the running total, applying discount if
+        got to the discount quantity.
+
+        @:return: True if it's a valid Stock Keeping Units, False otherwise.
+        """
+        item = PRICE_TABLE.get(sku)
+        if item:
+            self.running_total += item.price
+            if item.item_id in self.cart:
+                self.cart[item.item_id] += 1
+            else:
+                self.cart[item.item_id] = 1
+            self._apply_discount(item)
+        else:
+            return False
+
+    def _apply_discount(self, item):
+        """
+        Check current cart count for the specified item and apply discount to
+        running total.
+        If a discount is applied resets the cart count of that item to reapply
+        discount.
+        :param item: SKU item present in PRICE_TABLE
+        """
+        current_count = self.cart[item.item.item_id]
+        discount_quantity = item.discount_quantity
+        if discount_quantity and current_count == discount_quantity:
+            discount = (discount_quantity * item.price) - item.discount_price
+            self.running_total -= discount
+            self.cart[item.item_id] = 0
+
+
+    def get_total(self):
+        return self.running_total
+
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    raise NotImplementedError()
+
+
+    supermarket = SuperMarket()
+    for sku in skus:
+        valid_sku = supermarket.scan(sku)
+        if not valid_sku:
+            return -1
+    return supermarket.get_total()
