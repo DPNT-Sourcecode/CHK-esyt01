@@ -1,11 +1,22 @@
+PRICE_DISCOUNT_TYPE = 'discount'
+MULTI_PRICING_DISCOUNT_TYPE = 'multi_pricing'
+GROUP_PRICING_DISCOUNT_TYPE = 'group_pricing'
+VALID_DISCOUNT_TYPES = (PRICE_DISCOUNT_TYPE,
+                        MULTI_PRICING_DISCOUNT_TYPE,
+                        GROUP_PRICING_DISCOUNT_TYPE)
 
 
 class Promotion(object):
-    def __init__(self, discount_key, discount_price=None,
-                 discount_product_id=None):
+    def __init__(self, discount_type,
+                 discount_key=None,
+                 discount_price=None,
+                 discount_product_id=None,
+                 discount_group=None):
+        self.discount_type = discount_type
         self.discount_key = discount_key
         self.discount_price = discount_price
         self.discount_product_id = discount_product_id
+        self.discount_group = discount_group
 
 
 class Item(object):
