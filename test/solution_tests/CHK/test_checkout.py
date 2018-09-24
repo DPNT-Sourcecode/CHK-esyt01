@@ -30,5 +30,6 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('EE'), 80)
         self.assertEqual(checkout_solution.checkout('EEB'), 110)
 
+
 if __name__ == '__main__':
     unittest.main()
