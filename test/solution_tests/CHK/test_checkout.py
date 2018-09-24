@@ -30,6 +30,12 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('EE'), 80)
         self.assertEqual(checkout_solution.checkout('EEB'), 110)
 
+    def test_multiple_discounts_of_same_product(self):
+        self.assertEqual(checkout_solution.checkout('AAAAA'), 200)
+        self.assertEqual(checkout_solution.checkout('AAAAAA'), 250)
+        self.assertEqual(checkout_solution.checkout('AAAAAAA'), 300)
+        self.assertEqual(checkout_solution.checkout('AAAAAAAA'), 330)
+
 
 if __name__ == '__main__':
     unittest.main()
