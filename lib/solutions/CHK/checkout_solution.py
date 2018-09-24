@@ -105,19 +105,16 @@ class SuperMarket(object):
                 applied_promotions = 0
                 while applied_promotions < number_of_promotions:
                     promotion = item.promotions[applied_promotions]
-                    print(applied_promotions)
-                    print(promotion.discount_key)
-                    print(self.order)
                     if promotion.discount_key in self.order:
                         discount_price = promotion.discount_price
                         discount_product = promotion.discount_product_id
                         if discount_price:
-                            discount = (len(promotion.discount_key) * item.price) - item.discount_price
+                            discount = (len(promotion.discount_key) * item.price) - promotion.discount_price
                             self.running_total -= discount
                         else:
                             bonus_product = self.PRICE_TABLE.get(discount_product)
                             self.cart.add_bonus_item_to_cart(item=bonus_product)
-                        self.order.replace(promotion.discount_key, '')
+                        self.order = self.order.replace(promotion.discount_key, '')
                     else:
                         applied_promotions += 1
 
