@@ -53,10 +53,10 @@ class SuperMarket(object):
     """
     PRICE_TABLE = {
         'A': Item(item_id='A', price=50,
-                  promotions={'AAA': Promotion(discount_quantity=3,
-                                               discount_price=130),
-                              'AAAAA': Promotion(discount_quantity=5,
+                  promotions={'AAAAA': Promotion(discount_quantity=5,
                                                  discount_price=200),
+                              'AAA': Promotion(discount_quantity=3,
+                                               discount_price=130),
                               }),
         'B': Item(item_id='B', price=30,
                   promotions={'BB': Promotion(discount_quantity=2,
@@ -98,8 +98,10 @@ class SuperMarket(object):
         for item_identifier, cart_item in enumerate(self.cart.items):
             current_count = self.items_count[item_identifier]
             item = cart_item['item']
-            if item.promotions:
-                discount_quantity = item.discount_quantity
+            number_of_promotions = len(item.promotions)
+            applied_promotions = 0
+            for promotion_key, promotion in enumerate(item.promotions):
+
                 discount_price = item.discount_price
                 discount_product = item.discount_product
                 if discount_quantity and current_count == discount_quantity:
