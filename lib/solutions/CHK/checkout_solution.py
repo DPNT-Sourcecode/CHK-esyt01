@@ -58,7 +58,10 @@ class SuperMarket(object):
         'D': Item(item_id='D', price=15, promotions=None),
         'E': Item(item_id='E', price=40,
                   promotions=[Promotion(discount_key='EE',
-                                        discount_product_id='B')])
+                                        discount_product_id='B')]),
+        'F': Item(item_id='F', price=10,
+                  promotions=[Promotion(discount_key='FF',
+                                        discount_product_id='F')])
     }
 
     def __init__(self, cart_skus):
