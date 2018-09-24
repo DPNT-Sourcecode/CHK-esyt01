@@ -16,6 +16,13 @@ PRICE_TABLE = {
              discount_product='B'),
 }
 
+class Item(object):
+
+    def __init__(self, id, price, promotions=None):
+        self.item_id = id
+        self.price = price
+        self.promotions = promotions
+
 
 class Cart(object):
     """
