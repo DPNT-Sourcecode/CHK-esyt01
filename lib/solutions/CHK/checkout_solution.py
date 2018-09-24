@@ -28,7 +28,6 @@ class SuperMarket(object):
 
         @:return: True if it's a valid Stock Keeping Units, False otherwise.
         """
-        print(PRICE_TABLE)
         item = PRICE_TABLE.get(sku)
         print('sku requested %s' % sku)
         print('item %s' % item)
