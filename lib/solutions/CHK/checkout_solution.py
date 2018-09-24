@@ -174,8 +174,19 @@ class SuperMarket(object):
             self.running_total -= discount
             self.order = self.order.replace(discount_product, '', 1)
 
-    def _apply_group_discount(self):
-        pass
+    def _apply_group_discount(self, promotion):
+        group_searching = True
+        group_skus = promotion.discount_group
+        while group_searching:
+            found_skus = 0
+            current_value = 0
+            for sku in group_skus:
+                if sku in self.order:
+                    item_info = self.PRICE_TABLE.get(sku)
+                    current_value += item_info.price
+                    found_skus += 1
+                    self.order = self.order.replace(sku, '', 1)
+
 
     def apply_discounts(self):
         """
