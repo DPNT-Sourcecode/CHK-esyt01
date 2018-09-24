@@ -70,7 +70,7 @@ class SuperMarket(object):
                                         discount_price=45)]),
         'I': Item(item_id='I', price=35, promotions=None),
         'J': Item(item_id='J', price=60, promotions=None),
-        'K': Item(item_id='K', price=80,
+        'K': Item(item_id='K', price=70,
                   promotions=[Promotion(discount_key='KK',
                                         discount_price=120)]),
         'L': Item(item_id='L', price=90, promotions=None),
@@ -88,7 +88,7 @@ class SuperMarket(object):
         'R': Item(item_id='R', price=50,
                   promotions=[Promotion(discount_key='RRR',
                                         discount_product_id='Q')]),
-        'S': Item(item_id='S', price=30, promotions=None),
+        'S': Item(item_id='S', price=20, promotions=None),
         'T': Item(item_id='T', price=20, promotions=None),
         'U': Item(item_id='U', price=40,
                   promotions=[Promotion(discount_key='UUU',
@@ -99,9 +99,9 @@ class SuperMarket(object):
                               Promotion(discount_key='VV',
                                         discount_price=90)]),
         'W': Item(item_id='W', price=20, promotions=None),
-        'X': Item(item_id='X', price=90, promotions=None),
-        'Y': Item(item_id='Y', price=10, promotions=None),
-        'Z': Item(item_id='Z', price=50, promotions=None)
+        'X': Item(item_id='X', price=17, promotions=None),
+        'Y': Item(item_id='Y', price=20, promotions=None),
+        'Z': Item(item_id='Z', price=21, promotions=None)
     }
 
     def __init__(self, cart_skus):
