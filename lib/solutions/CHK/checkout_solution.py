@@ -95,7 +95,7 @@ class SuperMarket(object):
         If a discount is applied resets the cart count of that item to reapply
         discount.
         """
-        for item_identifier in self.items_count:
+        for item_identifier, cart_item in enumerate(self.cart.items):
             current_count = self.items_count[item_identifier]
             item = self.PRICE_TABLE.get(item_identifier)
             if item.promotions:
@@ -122,7 +122,7 @@ def checkout(skus):
     Supermarket checkout that calculates the total price of a number of
     items
     """
-    supermarket = SuperMarket()
+    supermarket = SuperMarket(sorted(skus))
     for sku in skus:
         valid_sku = supermarket.scan(sku)
         if not valid_sku:
