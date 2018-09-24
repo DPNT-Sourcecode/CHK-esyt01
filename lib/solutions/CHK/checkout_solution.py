@@ -123,7 +123,7 @@ def checkout(skus):
     Supermarket checkout that calculates the total price of a number of
     items
     """
-    supermarket = SuperMarket(''.join(sorted(skus)))
+    supermarket = SuperMarket(''.join(sorted(skus, reverse=True)))
     for sku in skus:
         valid_sku = supermarket.scan(sku)
         if not valid_sku:
@@ -133,4 +133,4 @@ def checkout(skus):
 
 
 if __name__ == '__main__':
-    checkout('EEEEBB')
+    print(checkout('EEEEBB'))
