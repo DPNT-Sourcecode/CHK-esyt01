@@ -7,6 +7,9 @@ class TestCheckout(unittest.TestCase):
     def test_simple_checkout(self):
         self.assertEqual(checkout_solution.checkout('A'), 50)
 
+    def test_multiple_items(self):
+        self.assertEqual(checkout_solution.checkout('BADABA'), 50)
+
 
 if __name__ == '__main__':
     unittest.main()

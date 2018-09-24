@@ -29,8 +29,6 @@ class SuperMarket(object):
         @:return: True if it's a valid Stock Keeping Units, False otherwise.
         """
         item = PRICE_TABLE.get(sku)
-        print('sku requested %s' % sku)
-        print('item %s' % item)
         if item:
             self.running_total += item.price
             if item.item_id in self.cart:
@@ -38,6 +36,7 @@ class SuperMarket(object):
             else:
                 self.cart[item.item_id] = 1
             self._apply_discount(item)
+            return True
         else:
             return False
 
