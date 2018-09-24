@@ -2,7 +2,7 @@
 from collections import Counter
 
 
-class Promotions(object):
+class Promotion(object):
     def __init__(self, discount_quantity, discount_price=None,
                  discount_product_id=None):
         self.discount_quantity = discount_quantity
@@ -12,8 +12,8 @@ class Promotions(object):
 
 class Item(object):
     """Items in the supermarket"""
-    def __init__(self, id, price, promotions=None):
-        self.item_id = id
+    def __init__(self, item_id, price, promotions=None):
+        self.item_id = item_id
         self.price = price
         self.promotions = promotions
 
@@ -61,7 +61,12 @@ class SuperMarket(object):
     validating SKU's and applying discounts when available.
     """
     PRICE_TABLE = {
-        'A': Item(item_id='A', price=50, promotions={}discount_quantity=3, discount_price=130,
+        'A': Item(item_id='A', price=50,
+                  promotions={'disc_3': Promotion(discount_quantity=3,
+                                                  discount_price=130),
+                              'disc_5': Promotion(discount_quantity=5,
+                                                  discount_price=200),
+                              },
                  discount_product=None),
         'B': Item(item_id='B', price=30, discount_quantity=2, discount_price=45,
                  discount_product=None),
