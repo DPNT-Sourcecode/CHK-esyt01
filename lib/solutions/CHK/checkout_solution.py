@@ -28,7 +28,7 @@ class Cart(object):
 
     def add_item_to_cart(self, item):
         """Adds item to cart or increments the quantity of that item."""
-        if item.item_id not in self.cart:
+        if item.item_id in self.items:
             self.items[item.item_id]['quantity'] += 1
         else:
             self.items[item.item_id] = {'item': item, 'quantity': 1}
@@ -38,13 +38,20 @@ class Cart(object):
         Adds item to bonus cart or increments the quantity of that item.
         Does not count to running total
         """
-        if item.item_id not in self.cart:
+        if item.item_id in self.bonus_items:
             self.bonus_items[item.item_id]['quantity'] += 1
         else:
             self.bonus_items[item.item_id] = {'item': item, 'quantity': 1}
 
     def get_item_quantity_in_cart(self, item_id):
         return self.items[item_id]['quantity']
+
+    def reset_item_quantity_in_cart(self, item_id):
+        """
+        Resets the quantity of the item in the cart
+        (example: after applied discount).
+        """
+        self.items[item_id]['quantity'] = 0
 
 
 class SuperMarket(object):
@@ -92,7 +99,7 @@ class SuperMarket(object):
             else:
                 bonus_product = PRICE_TABLE.get(discount_product)
                 self.cart.add_bonus_item_to_cart(bonus_product)
-            self.cart[item.item_id] = 0
+            self.cart.reset_item_quantity_in_cart()
 
     def get_total(self):
         return self.running_total
