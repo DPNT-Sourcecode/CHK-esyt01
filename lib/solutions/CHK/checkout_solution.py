@@ -164,6 +164,9 @@ class SuperMarket(object):
             self.running_total -= discount
             self.order = self.order.replace(discount_product, '', 1)
 
+    def _apply_group_discount(self):
+        pass
+
     def apply_discounts(self):
         """
         Checks current quantity of items in cart and applies discount to
@@ -181,18 +184,24 @@ class SuperMarket(object):
                 # passes to other promotion when hasn't found any more to apply
                 while applied_promotions < number_of_promotions:
                     promotion = item.promotions[applied_promotions]
-                    # checks the pattern is in the order
-                    if promotion.discount_key in self.order:
-                        # removes the items from the order since
-                        # we are already applying promotion
-                        self.order = self.order.replace(promotion.discount_key, '', 1)
-                        discount_type = promotion.discount_type
-                        # check the type of discount to apply
-                        if discount_type == PRICE_DISCOUNT_TYPE:
-                            self._apply_price_discount(promotion, item)
-                        elif discount_type == MULTI_PRICING_DISCOUNT_TYPE:
-                            self._apply_product_discount(promotion)
+                    if promotion.discount_type in (PRICE_DISCOUNT_TYPE,
+                                                   MULTI_PRICING_DISCOUNT_TYPE):
+                        # checks the pattern is in the order
+                        if promotion.discount_key in self.order:
+                            # removes the items from the order since
+                            # we are already applying promotion
+                            self.order = self.order.replace(promotion.discount_key, '', 1)
+                            discount_type = promotion.discount_type
+                            # check the type of discount to apply
+                            if discount_type == PRICE_DISCOUNT_TYPE:
+                                self._apply_price_discount(promotion, item)
+                            else:
+                                self._apply_product_discount(promotion)
+                        else:
+                            applied_promotions += 1
                     else:
+                        # group promotions have a different handling
+                        self._apply_group_discount()
                         applied_promotions += 1
 
     def get_total(self):
