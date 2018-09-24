@@ -1,3 +1,6 @@
 # noinspection PyShadowingBuiltins,PyUnusedLocal
+import math
+
+
 def compute(x, y):
-    return x + y
+    return math.sum(x, y)
