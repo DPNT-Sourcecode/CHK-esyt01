@@ -211,7 +211,7 @@ class SuperMarket(object):
                             applied_promotions += 1
                     else:
                         # group promotions have a different handling
-                        self._apply_group_discount()
+                        self._apply_group_discount(promotion)
                         applied_promotions += 1
 
     def get_total(self):
