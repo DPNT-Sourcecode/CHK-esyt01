@@ -50,7 +50,8 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('ABCDFEABFCDEF'), 300)
 
     def test_more_products(self):
-        self.assertEqual(checkout_solution.checkout('VVVVVV'), 270)
+        self.assertEqual(checkout_solution.checkout('VVVVVV'), 260)
+        self.assertEqual(checkout_solution.checkout('VVVVV'), 220)
         self.assertEqual(checkout_solution.checkout('UUU'), 120)
         self.assertEqual(checkout_solution.checkout('UUUU'), 120)
         self.assertEqual(checkout_solution.checkout('RRRQQQQ'), 230)
