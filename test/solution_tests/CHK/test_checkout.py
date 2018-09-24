@@ -49,6 +49,17 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('FFFFFF'), 40)
         self.assertEqual(checkout_solution.checkout('ABCDFEABFCDEF'), 300)
 
+    def test_more_products(self):
+        self.assertEqual(checkout_solution.checkout('VVVVVV'), 270)
+        self.assertEqual(checkout_solution.checkout('UUU'), 120)
+        self.assertEqual(checkout_solution.checkout('UUUU'), 120)
+        self.assertEqual(checkout_solution.checkout('RRRQQQQ'), 230)
+        self.assertEqual(checkout_solution.checkout('UUUU'), 120)
+        self.assertEqual(checkout_solution.checkout('PPPPP'), 200)
+        self.assertEqual(checkout_solution.checkout('NNNM'), 120)
+        self.assertEqual(checkout_solution.checkout('PPPPP'), 200)
+        self.assertEqual(checkout_solution.checkout('HHHHHHHHHHHHHHH'), 125)
+
 
 if __name__ == '__main__':
     unittest.main()
