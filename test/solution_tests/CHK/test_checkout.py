@@ -66,7 +66,8 @@ class TestCheckout(unittest.TestCase):
 
     def test_group_discount(self):
         self.assertEqual(checkout_solution.checkout('ZYTSX'), 82)
-        self.assertEqual(checkout_solution.checkout('ZYTSXS'), 90)
+        self.assertEqual(checkout_solution.checkout('ZYTSXS'), 102)
+        self.assertEqual(checkout_solution.checkout('ZYTSXT'), 90)
 
 
 if __name__ == '__main__':

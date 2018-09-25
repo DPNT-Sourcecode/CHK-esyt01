@@ -178,10 +178,7 @@ class SuperMarket(object):
     def _apply_group_discount(self, promotion):
         group_searching = True
         group_skus = promotion.discount_group
-        print('-----------------------')
         while group_searching:
-            print('here')
-            print(self.order)
             found_skus = 0
             current_value = 0
             for sku in group_skus:
@@ -254,6 +251,3 @@ def checkout(skus):
     supermarket.apply_discounts()
     return supermarket.get_total()
 
-
-if __name__ == '__main__':
-    print(checkout('ZYTSXS'))
