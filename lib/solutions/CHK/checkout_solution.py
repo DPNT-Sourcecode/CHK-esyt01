@@ -4,6 +4,7 @@ GROUP_PRICING_DISCOUNT_TYPE = 'group_pricing'
 VALID_DISCOUNT_TYPES = (PRICE_DISCOUNT_TYPE,
                         MULTI_PRICING_DISCOUNT_TYPE,
                         GROUP_PRICING_DISCOUNT_TYPE)
+MAXIMUM_SUPPORTED_GROUP_ITEMS = 3
 
 
 class Promotion(object):
@@ -186,7 +187,13 @@ class SuperMarket(object):
                     current_value += item_info.price
                     found_skus += 1
                     self.order = self.order.replace(sku, '', 1)
+                if found_skus == MAXIMUM_SUPPORTED_GROUP_ITEMS:
+                    discount = current_value - promotion.discount_price
+                    self.running_total -= discount
+                    break
 
+            if found_skus < MAXIMUM_SUPPORTED_GROUP_ITEMS:
+                group_searching = False
 
     def apply_discounts(self):
         """
