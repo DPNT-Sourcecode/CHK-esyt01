@@ -179,14 +179,17 @@ class SuperMarket(object):
         group_searching = True
         group_skus = promotion.discount_group
         while group_searching:
-            found_skus = 0
-            current_value = 0
-            for sku in group_skus:
+            found_skus, current_value, group_sku_index = 0, 0, 0
+            length_of_group = len(group_skus)
+            while group_sku_index < length_of_group:
+                sku = group_skus[group_sku_index]
                 if sku in self.order:
                     item_info = self.PRICE_TABLE.get(sku)
                     current_value += item_info.price
                     found_skus += 1
                     self.order = self.order.replace(sku, '', 1)
+                else:
+                    group_sku_index += 1
                 if found_skus == MAXIMUM_SUPPORTED_GROUP_ITEMS:
                     discount = current_value - promotion.discount_price
                     self.running_total -= discount
@@ -251,3 +254,6 @@ def checkout(skus):
     supermarket.apply_discounts()
     return supermarket.get_total()
 
+
+if __name__ == '__main__':
+    print(checkout('ZZZ'))
