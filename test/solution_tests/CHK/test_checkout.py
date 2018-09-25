@@ -64,6 +64,10 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(checkout_solution.checkout('KKK'), 190)
         self.assertEqual(checkout_solution.checkout('KKKK'), 240)
 
+    def test_group_discount(self):
+        self.assertEqual(checkout_solution.checkout('ZYTSX'), 82)
+        self.assertEqual(checkout_solution.checkout('ZYTSXS'), 90)
+
 
 if __name__ == '__main__':
     unittest.main()
